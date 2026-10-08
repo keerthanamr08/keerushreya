@@ -33,7 +33,8 @@ stage('Push Docker Image'){
 steps{
      script{
                docker.withRegistry('','dockerhub-creds'){
-                  docker.image("$(DOCKER_IMAGE):v1").push()
+                  docker.image("${DOCKER_IMAGE
+                               }:v1").push()
 }
 }
 }
