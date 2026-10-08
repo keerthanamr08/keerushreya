@@ -18,4 +18,32 @@ dpcker.build("${DOCKER_IMAGE}:v1")
 }
 stage('Login to Docker Hub'){
 steps{
-withCredentails
+withcredentials([usernamePassword(
+    credentialsId: 'dockerhub-creds',
+     usernameVarible: 'DOCKER_USER',
+passwordVariable: 'DOCKER_PASS'
+)])}
+ bat 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+}
+}
+}
+
+stage('Push Docker Image'){
+steps{
+     script{
+               docker.withRegistry('','dockerhub-creds'){
+                  docker.image("$(DOCKER_IMAGE):v1").push()
+}
+}
+}
+}
+}
+    post {
+          success{
+             echo 'Image successfully built and pushed to Docker Hub'
+}
+   failure{
+echo 'Pipeline failed'
+}
+}
+}DOCKER_USER
