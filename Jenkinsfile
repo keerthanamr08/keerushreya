@@ -12,13 +12,14 @@ git 'https://github.com/keerthanamr08/keerushreya.git'
 stage('Build Docker Image'){
 steps{
 script{
-dpcker.build("${DOCKER_IMAGE}:v1")
+docker.build("${DOCKER_IMAGE}:v1")
 }
 }
 }
 stage('Login to Docker Hub'){
 steps{
-withcredentials([usernamePassword(
+withcredentials([
+  usernamePassword(
     credentialsId: 'dockerhub-creds',
      usernameVarible: 'DOCKER_USER',
 passwordVariable: 'DOCKER_PASS'
